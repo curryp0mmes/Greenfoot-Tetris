@@ -16,8 +16,19 @@ public class MyWorld extends World
     public MyWorld()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(20, 20, 16);
+        super(20, 15, 50);
         setBackground("images/Wall.jpg");
         Greenfoot.setSpeed(30);
+        prepare();
+    }
+
+    /**
+     * Prepare the world for the start of the program.
+     * That is: create the initial objects and add them to the world.
+     */
+    private void prepare()
+    {
+        Menu menu = new Menu();
+        addObject(menu,15,7);
     }
 }

@@ -10,7 +10,8 @@ import java.util.*;
 public class GameController  
 {
     private ArrayList<Square> parents = new ArrayList<Square>();
-
+    private Square nextObject = null;
+    private Square currentObject = null;
     /**
      * Constructor for objects of class GameController
      */
@@ -22,22 +23,33 @@ public class GameController
 
     public void run()
     {
-        if(parents.isEmpty()) {
-            int randomInteger = (int)(Math.random()*2);
-            randomInteger = 0; //tem as this is overwriting the rng
-            if(randomInteger == 0)
-            {
-                Square newParent = new RedSquare();
-                newParent.addParent(3, world);
-                parents.add(newParent);
-            }
-            else if(randomInteger == 1) {
-                return;
-            }
+        if(nextObject == null) {
+            nextObject = makeNewSquare();
         }
-        for (Square parent : parents)
-        {
-            parent.fallDown();  
+        if(currentObject == null || !currentObject.fallDown()) {
+            currentObject = nextObject;
+            currentObject.moveTo(5, 1);
+            if(!currentObject.fallDown()) { //Game Over
+                System.out.println("You lost! Try again!");
+                Greenfoot.stop();
+            }
+            nextObject = null;
         }
+    }
+    
+    private Square makeNewSquare()
+    {
+        Square newSquare;
+        int randomInteger = (int)(Math.random()*4);
+        //randomInteger = 0; //temp as this is overwriting the rng
+        if (randomInteger == 0) newSquare = new RedSquare();
+        else if (randomInteger == 1) newSquare = new GreenSquare();         
+        else if (randomInteger == 2) newSquare = new YellowSquare();       
+        else newSquare = new BlueSquare();
+        
+        newSquare.addParent(3, world);
+        parents.add(newSquare);
+        
+        return newSquare;
     }
 }

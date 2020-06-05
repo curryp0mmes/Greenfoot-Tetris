@@ -43,6 +43,9 @@ public class Square extends Actor
             if(this instanceof RedSquare) newChild = new RedSquare();
             else if(this instanceof GreenSquare) newChild = new GreenSquare();
             else if(this instanceof YellowSquare) newChild = new YellowSquare();
+            else if(this instanceof WhiteSquare) newChild = new WhiteSquare();
+            else if(this instanceof OrangeSquare) newChild = new OrangeSquare();
+            else if(this instanceof PurpleSquare) newChild = new PurpleSquare();
             else newChild = new BlueSquare();
             
             int randX = 0,randY = 0;

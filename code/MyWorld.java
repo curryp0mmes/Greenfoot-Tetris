@@ -15,12 +15,12 @@ public class MyWorld extends World
      */
     private GameController game = new GameController(this);
     
-    public MyWorld()
+    public MyWorld(int width, int height)
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
-        super(20, 15, 50);
+        super(width + 9, height, 50);
         setBackground("images/Wall.jpg");
-        Greenfoot.setSpeed(30);
+        Greenfoot.setSpeed(35);
         prepare();
         Greenfoot.start();
     }
@@ -31,8 +31,10 @@ public class MyWorld extends World
      */
     private void prepare()
     {
-        Menu menu = new Menu();
-        addObject(menu,15,7);
+        for(int i = 0; i < this.getHeight();i++){
+            Menu menu = new Menu();
+            addObject(menu,this.getWidth()-5,i);
+        }
     }
     public void act()
     {

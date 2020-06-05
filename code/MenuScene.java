@@ -26,11 +26,12 @@ public class MenuScene extends World
     }
 
     private void startPlaying() {
-        World newWorld = new MyWorld();
+        World newWorld = new MyWorld(20,15);
         Greenfoot.setWorld(newWorld);
     }
 
     public void act() {
-        if(Greenfoot.mouseClicked(playButton)) startPlaying();
+        if(Greenfoot.mouseClicked(playButton)) 
+            startPlaying();
     }
 }

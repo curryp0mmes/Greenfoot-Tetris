@@ -82,7 +82,7 @@ public class Square extends Actor
             }
         }
         else {
-            if(getWorld().getWidth() <= who.getX() + dir && who.getX() + dir < 0) return false;
+            if(getWorld().getWidth() - 9 <= who.getX() + dir || who.getX() + dir < 0) return false;
         
         }
         return true;
@@ -98,5 +98,14 @@ public class Square extends Actor
             this.setLocation(x + relativeX, y + relativeY);
         }
         
+    }
+    public void moveOne(int dir) { //dir -1=left 1= right
+        if(!(dir == 1 || dir == -1)) return;
+        
+        if(!canMove(this, dir)) return;
+        for (Square child : children) {
+           if(!canMove(child, dir)) return;
+        }
+        moveTo(this.getX() + dir, this.getY());
     }
 }

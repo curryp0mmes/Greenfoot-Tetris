@@ -31,10 +31,15 @@ public class GameController
             currentObject.moveTo(5, 1);
             if(!currentObject.fallDown()) { //Game Over
                 System.out.println("You lost! Try again!");
-                Greenfoot.stop();
+                World menu = new MenuScene();
+                Greenfoot.setWorld(menu);
             }
             nextObject = null;
         }
+        
+        if(Greenfoot.isKeyDown("Right")) currentObject.moveOne(1);
+        else if(Greenfoot.isKeyDown("Left")) currentObject.moveOne(-1);
+        
     }
     
     private Square makeNewSquare()

@@ -22,6 +22,7 @@ public class MyWorld extends World
         setBackground("images/Wall.jpg");
         Greenfoot.setSpeed(30);
         prepare();
+        Greenfoot.start();
     }
     
     /**

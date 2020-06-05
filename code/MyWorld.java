@@ -13,6 +13,8 @@ public class MyWorld extends World
      * Constructor for objects of class MyWorld.
      * 
      */
+    private GameController game = new GameController(this);
+    
     public MyWorld()
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
@@ -21,7 +23,7 @@ public class MyWorld extends World
         Greenfoot.setSpeed(30);
         prepare();
     }
-
+    
     /**
      * Prepare the world for the start of the program.
      * That is: create the initial objects and add them to the world.
@@ -30,5 +32,9 @@ public class MyWorld extends World
     {
         Menu menu = new Menu();
         addObject(menu,15,7);
+    }
+    public void act()
+    {
+        game.run();
     }
 }

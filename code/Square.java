@@ -36,12 +36,12 @@ public class Square extends Actor
     
     public void addParent(int childCount, World world) {
         isParent = true;
-        world.addObject(this, world.getWidth() - 5, 2);
+        world.addObject(this, world.getWidth() - 5, 3);
         for (int i = 0; i < childCount; i++) // add new children
         {
             Square newChild;
-            if(this instanceof RedSquare) newChild = new RedSquare();
-            else if(this instanceof GreenSquare) newChild = new GreenSquare();
+            if(this instanceof RedSquare) newChild = new RedSquare();                  //checking own color to give
+            else if(this instanceof GreenSquare) newChild = new GreenSquare();         // children the same color
             else if(this instanceof YellowSquare) newChild = new YellowSquare();
             else if(this instanceof WhiteSquare) newChild = new WhiteSquare();
             else if(this instanceof OrangeSquare) newChild = new OrangeSquare();
@@ -49,7 +49,7 @@ public class Square extends Actor
             else newChild = new BlueSquare();
             
             int randX = 0,randY = 0;
-            while(!world.getObjectsAt(this.getX() + randX, this.getY() + randY, Square.class).isEmpty()) {
+            while(!world.getObjectsAt(this.getX() + randX, this.getY() + randY, Square.class).isEmpty()) {  //gets a random, connected and not occupied position for child
                 if((int)(Math.random() * 2) == 0) 
                     randX += (int)(Math.random() * 3) - 1;
                 else

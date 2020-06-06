@@ -13,6 +13,7 @@ public class GameController
     private Square nextObject = null;
     private Square currentObject = null;
     private int count = 0;
+    private int score = 0;
     /**
      * Constructor for objects of class GameController
      */
@@ -22,37 +23,38 @@ public class GameController
         this.world = worldCopy;
     }
 
-    public void run()
+    public void run( int blocklength)
     {
         if(nextObject == null) {
-            nextObject = makeNewSquare();
+            nextObject = makeNewSquare(blocklength); //creates a preview if it is empty
         }
-        if(currentObject == null) {
+        if(currentObject == null) {             //gets triggered at the start of the game
             currentObject = nextObject;
             currentObject.moveTo(5, 1);
             nextObject = null;
         }
-        if(count > 4 || Greenfoot.isKeyDown("Down")) {
-            if(!currentObject.fallDown()) {
+        if(count > 4 || Greenfoot.isKeyDown("Down")) { //falling only every 4 ticks or faster with down key
+            if(!currentObject.fallDown()) {     // This get triggered whenever a block lands
+                score += blocklength;
                 for(Square child : currentObject.children) {
-                    deadSquares.add(child);
+                    deadSquares.add(child);     //all of the squares get added to the "dead" blocks
                 }
                 currentObject.children.clear();
-                deadSquares.add(currentObject);
+                deadSquares.add(currentObject); //the parent aswell
                 
-                checkRows();
+                checkRows();                    //deletes full rows and moves others down
                 
-                currentObject = nextObject;
+                currentObject = nextObject;     //gets new object from the preview
                 currentObject.moveTo(5, 1);
-                if(!currentObject.fallDown()) { //Game Over
+                if(!currentObject.fallDown()) { //Game Over when new block can't fall
                     world.showText("GAME OVER!", (world.getWidth() - 9)/2, world.getHeight()/2);
                     Greenfoot.delay(15);
                     World menu = new MenuScene();
-                    Greenfoot.setWorld(menu);
+                    Greenfoot.setWorld(menu);   //return to menu
                 }
-                nextObject = null;
+                nextObject = null;              //clears preview
             }
-            count = 0;
+            count = 0;                          
         }
         
         if(Greenfoot.isKeyDown("Right")) currentObject.moveOne(1);
@@ -60,13 +62,15 @@ public class GameController
         
         if(Greenfoot.isKeyDown("Up")) currentObject.rotateBlock();
         
+        
+        world.showText(String.valueOf(score), world.getWidth() - 12, 5);
         count++;
     }
     
-    private Square makeNewSquare()
+    private Square makeNewSquare(int blocklength) //generates a random colored parent square
     {
         Square newSquare;
-        int randomInteger = (int)(Math.random()*7);
+        int randomInteger = (int)(Math.random()*7);         //random from 1-7
         //randomInteger = 0; //temp as this is overwriting the rng
         if (randomInteger == 0) newSquare = new RedSquare();
         else if (randomInteger == 1) newSquare = new GreenSquare();         
@@ -76,18 +80,19 @@ public class GameController
         else if (randomInteger == 5) newSquare = new OrangeSquare(); 
         else newSquare = new BlueSquare();
         
-        newSquare.addParent(3, world);
+        newSquare.addParent(blocklength - 1, world); //makes the block to parent
         
         return newSquare;
     }
     
-    private void checkRows() {
+    private void checkRows() {                  //deletes full rows and moves others down
         for(int y = 0; y < world.getHeight(); y++) {
             boolean fullRow = true;
             for(int x = 0; x < world.getWidth() - 9; x++) {
-                if(world.getObjectsAt(x, y, Square.class).isEmpty()) fullRow = false;
+                if(world.getObjectsAt(x, y, Square.class).isEmpty()) fullRow = false; //when there is a hole/no block
             }
             if(fullRow) {
+                score += (world.getWidth() - 9) * (world.getWidth() - 9);
                 ArrayList<Integer> deleteThis = new ArrayList<Integer>();
                 for(Square sqr : deadSquares) {
                     if(sqr.getY() == y) {
@@ -101,7 +106,9 @@ public class GameController
                 }
                 
                 
-                deadSquares.removeAll(deleteThis);
+                deleteThis.stream()                                 //not my code
+                    .sorted(Comparator.reverseOrder())              //deletes array objects by index
+                    .forEach(i->deadSquares.remove(i.intValue()));  // https://stackoverflow.com/questions/49283350/java-arraylist-removeall-but-for-indices
                 
             }
         }

@@ -14,12 +14,13 @@ public class MyWorld extends World
      * 
      */
     private GameController game = new GameController(this);
-    
-    public MyWorld(int width, int height)
+    private int blocklength;
+    public MyWorld(int width, int height, int newBlocklength)
     {    
         // Create a new world with 600x400 cells with a cell size of 1x1 pixels.
         super(width + 9, height, 50);
         setBackground("images/Wall.jpg");
+        blocklength = newBlocklength;
         Greenfoot.setSpeed(35);
         prepare();
         Greenfoot.start();
@@ -38,6 +39,6 @@ public class MyWorld extends World
     }
     public void act()
     {
-        game.run();
+        game.run(blocklength);
     }
 }

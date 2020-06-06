@@ -33,7 +33,7 @@ public class GameController
             currentObject.moveTo(5, 1);
             nextObject = null;
         }
-        if(count > 4 || Greenfoot.isKeyDown("Down")) { //falling only every 4 ticks or faster with down key
+        if(count > 4 || Greenfoot.isKeyDown("Down") || Greenfoot.isKeyDown("S")) { //falling only every 4 ticks or faster with down key
             if(!currentObject.fallDown()) {     // This get triggered whenever a block lands
                 score += blocklength;
                 for(Square child : currentObject.children) {
@@ -57,13 +57,14 @@ public class GameController
             count = 0;                          
         }
         
-        if(Greenfoot.isKeyDown("Right")) currentObject.moveOne(1);
-        else if(Greenfoot.isKeyDown("Left")) currentObject.moveOne(-1);
+        if(Greenfoot.isKeyDown("Right") || Greenfoot.isKeyDown("D")) currentObject.moveOne(1);
+        else if(Greenfoot.isKeyDown("Left") || Greenfoot.isKeyDown("A")) currentObject.moveOne(-1);
         
-        if(Greenfoot.isKeyDown("Up")) currentObject.rotateBlock();
+        if(Greenfoot.isKeyDown("Up") || Greenfoot.isKeyDown("W")) currentObject.rotateBlock();
         
+        if(Greenfoot.isKeyDown("escape")) Greenfoot.setWorld(new MenuScene());
         
-        world.showText(String.valueOf(score), world.getWidth() - 12, 5);
+        world.showText(String.valueOf(score), world.getWidth() - 5, 5);
         count++;
     }
     

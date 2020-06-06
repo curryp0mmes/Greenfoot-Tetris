@@ -14,7 +14,7 @@ public class Square extends Actor
      */
     //parent stuff
     private boolean isParent = false;
-    private ArrayList<Square> children = new ArrayList<Square>();
+    public ArrayList<Square> children = new ArrayList<Square>();
     private boolean falling = true;
     
     //child stuff

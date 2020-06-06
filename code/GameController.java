@@ -9,7 +9,7 @@ import java.util.*;
  */
 public class GameController  
 {
-    private ArrayList<Square> parents = new ArrayList<Square>();
+    private ArrayList<Square> deadSquares = new ArrayList<Square>(); //everything that fell down and is now not moving
     private Square nextObject = null;
     private Square currentObject = null;
     private int count = 0;
@@ -30,15 +30,18 @@ public class GameController
         if(currentObject == null) {
             currentObject = nextObject;
             currentObject.moveTo(5, 1);
-            if(!currentObject.fallDown()) { //Game Over
-                System.out.println("You lost! Try again!");
-                World menu = new MenuScene();
-                Greenfoot.setWorld(menu);
-            }
             nextObject = null;
         }
         if(count > 4 || Greenfoot.isKeyDown("Down")) {
             if(!currentObject.fallDown()) {
+                for(Square child : currentObject.children) {
+                    deadSquares.add(child);
+                }
+                currentObject.children.clear();
+                deadSquares.add(currentObject);
+                
+                checkRows();
+                
                 currentObject = nextObject;
                 currentObject.moveTo(5, 1);
                 if(!currentObject.fallDown()) { //Game Over
@@ -73,9 +76,34 @@ public class GameController
         else if (randomInteger == 5) newSquare = new OrangeSquare(); 
         else newSquare = new BlueSquare();
         
-        newSquare.addParent(5, world);
-        parents.add(newSquare);
+        newSquare.addParent(3, world);
         
         return newSquare;
+    }
+    
+    private void checkRows() {
+        for(int y = 0; y < world.getHeight(); y++) {
+            boolean fullRow = true;
+            for(int x = 0; x < world.getWidth() - 9; x++) {
+                if(world.getObjectsAt(x, y, Square.class).isEmpty()) fullRow = false;
+            }
+            if(fullRow) {
+                ArrayList<Integer> deleteThis = new ArrayList<Integer>();
+                for(Square sqr : deadSquares) {
+                    if(sqr.getY() == y) {
+                        world.removeObject(sqr);
+                        deleteThis.add(deadSquares.indexOf(sqr));
+                        
+                    }
+                    else if(sqr.getY() < y) {
+                        sqr.setLocation(sqr.getX(), sqr.getY() + 1);
+                    }
+                }
+                
+                
+                deadSquares.removeAll(deleteThis);
+                
+            }
+        }
     }
 }

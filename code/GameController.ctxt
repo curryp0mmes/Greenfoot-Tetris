@@ -7,4 +7,6 @@ comment2.params=
 comment2.target=void\ run()
 comment3.params=
 comment3.target=Square\ makeNewSquare()
-numComments=4
+comment4.params=
+comment4.target=void\ checkRows()
+numComments=5

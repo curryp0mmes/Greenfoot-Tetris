@@ -26,7 +26,7 @@ public class MenuScene extends World
     }
 
     private void startPlaying() {
-        World newWorld = new MyWorld(20,15);
+        World newWorld = new MyWorld(11,15);
         Greenfoot.setWorld(newWorld);
     }
 

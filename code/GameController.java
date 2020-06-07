@@ -64,7 +64,7 @@ public class GameController
         
         if(Greenfoot.isKeyDown("escape")) Greenfoot.setWorld(new MenuScene());
         
-        world.showText(String.valueOf(score), world.getWidth() - 5, 5);
+        world.showText("Score: " + String.valueOf(score), world.getWidth() - 5, 7);
         count++;
     }
     

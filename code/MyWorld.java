@@ -36,6 +36,11 @@ public class MyWorld extends World
             Menu menu = new Menu();
             addObject(menu,this.getWidth()-5,i);
         }
+        for(int i = 0; i < 3; i++) {
+            Square sqr = new BlueSquare();
+            
+            addObject(sqr, this.getWidth() - 6 + i, 7);
+        }
     }
     public void act()
     {

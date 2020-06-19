@@ -135,9 +135,34 @@ public class Square extends Actor
         moveTo(this.getX() + dir, this.getY());
     }
     
+    public boolean canRotate() {
+        if(!isParent) return false;
+        for (Square child : children) {
+           int oldX = child.getRelX();
+           int oldY = child.getRelY();
+           
+           int newX = oldY * -1;
+           int newY = oldX;
+           
+           if(getWorld().getWidth() - 9 <= this.getX() + newX || this.getX() + newX < 0) return false;
+           
+           List<Square> objectsNewX = getWorld().getObjectsAt(this.getX() + newX, this.getY() + newY, Square.class);
+           
+           if(!objectsNewX.isEmpty()) {
+                boolean notChild = true;
+                for (Square child2 : children) {
+                    if(child2.getX() == this.getX() + newX && child2.getY() == this.getY() + newY) notChild = false;
+                }
+                if(notChild && !(this.getX() == this.getX() + newX  && this.getY() == this.getY() + newY)) return false;
+            }
+            
+        }
+        return true;
+    }
+    
     public void rotateBlock() {
         if(!isParent) return;
-        
+        if(!this.canRotate()) return;
         for (Square child : children) {
            int oldX = child.getRelX();
            int oldY = child.getRelY();
